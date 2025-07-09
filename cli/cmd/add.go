@@ -71,5 +71,5 @@ func parseDue(due string) (*time.Time, error) {
 }
 
 func generateAddTaskResult(newTask task.Task) string {
-	return fmt.Sprintf("Task added: %s (Priority: %d, Due: %s)", newTask.Title, newTask.Priority, newTask.Due)
+	return fmt.Sprintf("✅ Task added: %s (Priority: %s, Due: %s)", newTask.Title, newTask.Priority.Symbol(), newTask.Due)
 }

@@ -6,13 +6,14 @@ import (
 	"os"
 	"strings"
 
+	"github.com/google/shlex"
 	"github.com/yourusername/tasky/cli/cmd"
 )
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Println("📝tasky - Interactive Task Manager")
+	fmt.Println("📝Tasky - Interactive Task Manager")
 	for {
 		fmt.Print("tasky > ")
 		if !scanner.Scan() {
@@ -28,7 +29,11 @@ func main() {
 			break
 		}
 
-		args := strings.Fields(line) // split input into tokens
+		args, err := shlex.Split(line)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "❌ Invalid input:", err)
+			continue
+		}
 		if err := cmd.ExecuteCommand(args); err != nil {
 			fmt.Fprintln(os.Stderr, "❌", err)
 		}
