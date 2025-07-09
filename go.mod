@@ -1,1 +1,1 @@
-module tasky
+module github.com/yourusername/tasky
