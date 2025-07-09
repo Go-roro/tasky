@@ -5,7 +5,7 @@ import "time"
 type Task struct {
 	ID        int
 	Title     string
-	Priority  int
+	Priority  Priority
 	Due       *time.Time
 	Done      bool
 	CreatedAt time.Time
