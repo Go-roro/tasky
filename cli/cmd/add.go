@@ -15,24 +15,24 @@ func (c *AddCommand) Name() string {
 	return "add"
 }
 
-func (c *AddCommand) OnAction(args []string) error {
+func (c *AddCommand) OnAction(args []string) (string, error) {
 	title, priorityInput, due, err := parseAddOptions(args)
 	if err != nil {
-		return fmt.Errorf("failed to parse flags: %w", err)
+		return "", fmt.Errorf("failed to parse flags: %w", err)
 	}
 
 	if *title == "" {
-		return errors.New("title is required")
+		return "", errors.New("title is required")
 	}
 
 	priority := task.Priority(*priorityInput)
 	if !priority.ValidPriority() {
-		return fmt.Errorf("priority must be between %d and %d", task.PriorityLow, task.PriorityHigh)
+		return "", fmt.Errorf("priority must be between %d and %d", task.PriorityLow, task.PriorityHigh)
 	}
 
 	dueDate, err := parseDue(*due)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	newTask := task.Task{
@@ -44,7 +44,7 @@ func (c *AddCommand) OnAction(args []string) error {
 		CreatedAt: time.Now(),
 	}
 	task.AddTask(&newTask)
-	return nil
+	return generateAddTaskResult(newTask), nil
 }
 
 func parseAddOptions(args []string) (title *string, priorityInput *int, due *string, err error) {
@@ -68,4 +68,8 @@ func parseDue(due string) (*time.Time, error) {
 		return nil, fmt.Errorf("invalid due date format: %v", err)
 	}
 	return &parsedDate, nil
+}
+
+func generateAddTaskResult(newTask task.Task) string {
+	return fmt.Sprintf("Task added: %s (Priority: %d, Due: %s)", newTask.Title, newTask.Priority, newTask.Due)
 }
