@@ -7,9 +7,9 @@ import (
 
 type Command interface {
 	Name() string
-	OnAction(args []string) (string, error)
 	CommandDescription() string
 	CommandHelp() string
+	OnAction(args []string) (string, error)
 }
 
 var commands = []Command{

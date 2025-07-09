@@ -1,18 +1,15 @@
 package task
 
-import "time"
+import "sync/atomic"
 
-type Task struct {
-	ID        int
-	Title     string
-	Priority  Priority
-	Due       *time.Time
-	Done      bool
-	CreatedAt time.Time
-}
-
+var nextID int32
 var tasks []*Task
 
 func AddTask(task *Task) {
+	task.ID = int(generateID())
 	tasks = append(tasks, task)
+}
+
+func generateID() int32 {
+	return atomic.AddInt32(&nextID, 1)
 }
