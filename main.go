@@ -13,7 +13,7 @@ import (
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Println("📝Tasky - Interactive Task Manager")
+	cmd.PrintStartManual()
 	for {
 		fmt.Print("tasky > ")
 		if !scanner.Scan() {
