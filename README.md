@@ -1,0 +1,1 @@
+# 📝 tasky: CLI Task Manager — Requirements Document
