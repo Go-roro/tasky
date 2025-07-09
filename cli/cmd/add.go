@@ -9,7 +9,9 @@ import (
 	"github.com/yourusername/tasky/task"
 )
 
-type AddCommand struct{}
+type AddCommand struct {
+	tasks *task.Tasks
+}
 
 func (c *AddCommand) Name() string {
 	return "add"
@@ -65,12 +67,12 @@ func (c *AddCommand) OnAction(args []string) (string, error) {
 		Done:      false,
 		CreatedAt: time.Now(),
 	}
-	task.AddTask(&newTask)
-	return generateAddTaskResult(newTask), nil
+	c.tasks.AddTask(&newTask)
+	return generateAddTaskResult(&newTask), nil
 }
 
 func parseAddOptions(args []string) (title *string, priorityInput *int, due *string, err error) {
-	flagSet := flag.NewFlagSet("add", flag.ExitOnError)
+	flagSet := flag.NewFlagSet("add", flag.ContinueOnError)
 	title = flagSet.String("title", "", "Title of the task")
 	priorityInput = flagSet.Int("priority", 2, "Priority of the task (1-3)")
 	due = flagSet.String("due", "", "Due date of the task (YYYY-MM-DD HH:MM)")
@@ -92,6 +94,6 @@ func parseDue(due string) (*time.Time, error) {
 	return &parsedDate, nil
 }
 
-func generateAddTaskResult(newTask task.Task) string {
+func generateAddTaskResult(newTask *task.Task) string {
 	return fmt.Sprintf("✅ Task ID-%d is added: %s (Priority: %s, Due: %s)", newTask.ID, newTask.Title, newTask.Priority.Symbol(), newTask.Due)
 }

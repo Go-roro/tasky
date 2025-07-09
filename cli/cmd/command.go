@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/yourusername/tasky/task"
 	"os"
 )
 
@@ -12,8 +13,11 @@ type Command interface {
 	OnAction(args []string) (string, error)
 }
 
+var taskStorage = task.InitializeTasks()
+
 var commands = []Command{
-	&AddCommand{},
+	&AddCommand{tasks: taskStorage},
+	&DoneCommand{tasks: taskStorage},
 }
 
 func ExecuteCommand(args []string) error {

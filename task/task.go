@@ -10,3 +10,10 @@ type Task struct {
 	Done      bool
 	CreatedAt time.Time
 }
+
+func (t *Task) MarkAsDone() {
+	if t.Done {
+		return
+	}
+	t.Done = true
+}
