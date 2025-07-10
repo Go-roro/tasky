@@ -30,6 +30,16 @@ func (t *Tasks) FindTaskByID(id int) (*Task, error) {
 	return nil, errors.New("task not found")
 }
 
+func (t *Tasks) DeleteTaskByID(id int) error {
+	for i, task := range t.values {
+		if task.ID == id {
+			t.values = append(t.values[:i], t.values[i+1:]...)
+			return nil
+		}
+	}
+	return errors.New("task not found")
+}
+
 func InitializeTasks() *Tasks {
 	return &Tasks{
 		values: make([]*Task, 0),

@@ -18,6 +18,7 @@ var taskStorage = task.InitializeTasks()
 var commands = []Command{
 	&AddCommand{tasks: taskStorage},
 	&DoneCommand{tasks: taskStorage},
+	&DeleteCommand{tasks: taskStorage},
 }
 
 func ExecuteCommand(args []string) error {
